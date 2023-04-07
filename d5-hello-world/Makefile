@@ -1,8 +1,8 @@
-PROJECT = awesomesauce
+PROJECT = d5-hello-world
 BUILD_DIR = bin
 
-SHARED_DIR = ../my-common-code
-CFILES = my-project.c
+SHARED_DIR = ../common
+CFILES = d5-hello-world.c
 CFILES += api.c
 AFILES += api-asm.S
 

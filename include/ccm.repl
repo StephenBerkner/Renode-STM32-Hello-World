@@ -1,0 +1,5 @@
+// In the STM32F4 memory map, 0x10XXXXXX is in the CCM region
+// which is NOT implemented by Renode. To fix this we will
+// add CCM RAM at 0x10000000 via the following:
+ccm: Memory.MappedMemory @ sysbus 0x10000000
+    size: 0x10000
