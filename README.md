@@ -1,3 +1,8 @@
+# Source Code Directories
+* `d5-hello-world` contains firmware source code for generating the elf that is loaded onto the Renode machine
+* `libopencm3 contains` libopencm3 submodule (https://github.com/libopencm3)
+* `common contains` common code needed by both `libopencm3` and `d5-hello-world firmware`
+
 # Cloning with Submodules and Building for the First Time
  1. ```git clone --recurse-submodules https://github.com/StephenBerkner/Renode-STM32-Hello-World.git```
     * If you skipped the ```--recurse-submodules``` it can be fixed with ```git submodule update --init```
@@ -14,12 +19,6 @@ Renode-Install-Folder
 ├── d5-hello-world.elf
 ├── ...
 ```
-
-# Source Code Directories
-* `d5-hello-world` contains firmware source code for generating the elf that is loaded onto the Renode machine
-* `libopencm3 contains` libopencm3 submodule (https://github.com/libopencm3)
-* `common contains` common code needed by both `libopencm3` and `d5-hello-world firmware`
-
 
 # Fixing Issues with the Renode Memory Model
 In the STM32F4 memory map, `0x10XXXXXX` is in the CCM region which is NOT implemented by Renode. To fix this we will add CCM RAM at `0x10000000` by creating a repl file with the following:
@@ -44,7 +43,7 @@ This repl file will need to be added to the machine order to get our program to 
 
 # Running our Firwmare on the Renode Emulator
 ```
-(monitor) mach create "d5-hello-world"`
+(monitor) mach create "d5-hello-world"
 (d5-hello-world)machine LoadPlatformDescription @platforms/boards/stm32f4_discovery-kit.repl 
 (d5-hello-world) sysbus LoadELF @d5-hello-world.elf 
 (d5-hello-world) machine LoadPlatformDescription @ccm.repl
@@ -57,8 +56,6 @@ Starting emulation...
 |         Monitor           |           Renode          |
 |:-------------------------:|:-------------------------:|
 |![](img/monitor-output.png)|![](img/renode-output.png) |
-
-
 
 # Design Considerations
 For the purpose of this exercise, the STM32F407 (included with Renode) was the chosen MCU. To send "hello world" all that is needed is an onboard USART to transmit the message to an emulated serial port. Renode provides an emulated serial port via `showAnalyzer sysbus.uart2`, which leaves implementing serial transmission on the STM32.
