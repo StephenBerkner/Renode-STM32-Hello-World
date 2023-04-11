@@ -7,17 +7,26 @@
 #include <libopencm3/stm32/gpio.h>
 #include <libopencm3/stm32/usart.h>
 
+// Initialize PA.2
+static void gpio_init(void){
+	// Set up PA.2 as an alternate function pin
+	gpio_mode_setup(GPIOA, GPIO_MODE_AF, GPIO_PUPD_NONE, GPIO2);
+	
+	// Set up PA.2 as USART2 Tx (alternate function 7)
+	gpio_set_af(GPIOA, GPIO_AF7, GPIO2);
+}
+
 // Set up peripheral clocks
-static void clock_setup(void){
-	//enable port A peripheral clock for usart
+static void clock_init(void){
+	// Enable port A peripheral clock for usart
 	rcc_periph_clock_enable(RCC_GPIOA);
 
-	//usart2 clocks enable
+	// Enable usart2 perhipheral clock
 	rcc_periph_clock_enable(RCC_USART2);
 }
 
-// Set up USART
-static void usart_setup(void){
+// Intialize USART2
+static void usart_init(void){
 	// Set serial communication over USART2 with 115200 baud rate, 8 bit data, 1 stop bit,
 	// no flow control or parity, and only transmission mode since we are only transmisison
 	usart_set_baudrate(USART2, 115200);
@@ -31,15 +40,7 @@ static void usart_setup(void){
 	usart_enable(USART2);
 }
 
-// Set up GPIO port
-static void gpio_setup(void){
-	// Set up port A alternate function usart2 transmit
-	gpio_mode_setup(GPIOA, GPIO_MODE_AF, GPIO_PUPD_NONE, GPIO2);
-	
-	// Set up usart2 tx as alternate function pin
-	gpio_set_af(GPIOA, GPIO_AF7, GPIO2);
 
-}
 
 // Override _write syscall to redirect output to USART2 
 int _write(int file, char *ptr, int len){
@@ -59,10 +60,10 @@ int _write(int file, char *ptr, int len){
 }
 
 int main(void) {
-	// Set up clock, gpio, and usart
-	clock_setup();
-	gpio_setup();
-	usart_setup();
+	// Initialize clock, gpio, and usart
+	clock_init();
+	gpio_init();
+	usart_init();
 
 	// The preceding new lines are needed so the text is visible below the RENODE logo
 	printf("\n\n\n\n\nHello world from Dojo Five!\n");
