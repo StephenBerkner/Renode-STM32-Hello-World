@@ -7,11 +7,13 @@
 
 The last step will produce `d5-hello-world/d5-hello-world.elf` which should be placed in your renode install location as follows:
 
+```
 Renode-Install-Folder
 ├── renode
 ├── renode_bundled
 ├── d5-hello-world.elf
 ├── ...
+```
 
 # Source Code Directories
 * `d5-hello-world` contains firmware source code for generating the elf that is loaded onto the Renode machine
